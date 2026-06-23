@@ -1,0 +1,42 @@
+# =====================
+# ENV FILES (SECRETS)
+# =====================
+.env
+.env.*
+!.env.example
+
+# =====================
+# PYTHON
+# =====================
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# =====================
+# MODELS (VERY IMPORTANT)
+# =====================
+*.pth
+*.pt
+*.onnx
+
+backend/ml/image_detection/models/weights/
+
+# =====================
+# NODE / NEXT.JS
+# =====================
+node_modules/
+.next/
+out/
+
+# =====================
+# LOGS
+# =====================
+*.log
+
+# =====================
+# SYSTEM FILES
+# =====================
+.DS_Store
+Thumbs.db
