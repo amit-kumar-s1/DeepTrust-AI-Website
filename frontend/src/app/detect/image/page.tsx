@@ -7,24 +7,39 @@ import ResultCard from "@/components/detection/result-card";
 
 import { detectImage } from "@/services/api/image.api";
 
+interface DetectionResult {
+  imageUrl: string;
+  prediction: string;
+  confidence: number;
+}
+
 export default function ImageDetectionPage() {
-  const [result, setResult] = useState<any>(null);
-  const [imagePreview, setImagePreview] = useState("");
+  const [result, setResult] = useState<DetectionResult | null>(null);
+  const [loading, setLoading] = useState(false);
 
   async function handleUpload(file: File) {
     try {
-      setImagePreview(
-        URL.createObjectURL(file)
-      );
+      setLoading(true);
 
-      const data =
-        await detectImage(file);
+      // Create preview URL for UI
+      const preview = URL.createObjectURL(file);
 
-      console.log(data);
+      // Call backend API
+      const data = await detectImage(file);
 
-      setResult(data);
+      // Normalize backend response
+      const normalizedResult: DetectionResult = {
+        imageUrl: preview,
+        prediction: (data?.prediction || "UNKNOWN").toUpperCase(),
+        confidence: Math.round(data?.confidence || 0),
+      };
+
+      setResult(normalizedResult);
     } catch (error) {
-      console.error(error);
+      console.error("Detection failed:", error);
+      setResult(null);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -39,14 +54,20 @@ export default function ImageDetectionPage() {
       </p>
 
       <div className="mt-10">
-        <UploadZone
-          onFileChange={handleUpload}
-        />
+        <UploadZone onFileChange={handleUpload} />
       </div>
 
-      {result && (
+      {/* Loading State */}
+      {loading && (
+        <div className="mt-10 text-gray-400">
+          Analyzing image...
+        </div>
+      )}
+
+      {/* Result */}
+      {result && !loading && (
         <ResultCard
-          imageUrl={imagePreview}
+          imageUrl={result.imageUrl}
           prediction={result.prediction}
           confidence={result.confidence}
         />
