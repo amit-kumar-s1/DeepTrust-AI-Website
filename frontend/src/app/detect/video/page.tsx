@@ -35,7 +35,11 @@ export default function VideoDetectionPage() {
       </div>
 
       {result && (
-        <ResultCard {...result} />
+          <ResultCard
+            imageUrl="/icons/text-placeholder.png"
+            prediction={result.verdict}
+            confidence={result.confidenceScore}
+          />
       )}
     </>
   );

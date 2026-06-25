@@ -54,7 +54,11 @@ export default function TextDetectionPage() {
       </div>
 
       {result && (
-        <ResultCard {...result} />
+        <ResultCard
+            imageUrl="/icons/text-placeholder.png"
+            prediction={result.verdict}
+            confidence={result.confidenceScore}
+          />
       )}
     </>
   );
