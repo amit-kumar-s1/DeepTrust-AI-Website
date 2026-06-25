@@ -13,8 +13,7 @@ const documentResult = {
 };
 
 export default function DocumentDetectionPage() {
-  const [result, setResult] =
-    useState<typeof documentResult | null>(null);
+  const [result, setResult] = useState<typeof documentResult | null>(null);
 
   return (
     <>
@@ -27,15 +26,15 @@ export default function DocumentDetectionPage() {
       </p>
 
       <div className="mt-10">
-        <UploadZone
-          onFileChange={() =>
-            setResult(documentResult)
-          }
-        />
+        <UploadZone onFileChange={() => setResult(documentResult)} />
       </div>
 
       {result && (
-        <ResultCard {...result} />
+        <ResultCard
+          imageUrl="/icons/document-placeholder.png"
+          prediction={result.verdict}
+          confidence={result.confidenceScore}
+        />
       )}
     </>
   );
